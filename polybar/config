@@ -1,0 +1,285 @@
+;=============================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;=============================================================
+
+[colors]
+background = #CC222222
+background-alt = #444
+foreground = #dfdfdf
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #bd2c40
+green = #4bffdc
+
+[bar/example]
+override-redirect = true
+width = 1358
+height = 27
+offset-x = 4
+offset-y = 4
+radius = 5.0
+fixed-center = true
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+line-size = 3
+line-color = #f00
+
+border-size = 4
+border-color = #00000000
+
+padding-left = 0
+padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = fixed:pixelsize=10;1
+font-1 = unifont:fontformat=truetype:size=8:antialias=false;0
+font-2 = siji:pixelsize=10;1
+font-3 = Font Awesome 5 Pro:pixelsize=10;3
+font-4 = Font Awesome 5 Pro Solid:pixelsize=10;3
+font-5 = Font Awesome 5 Brands:pixelsize=10;3
+
+modules-left = i3
+modules-center =
+modules-right = wlan eth filesystem pulseaudio memory cpu temperature battery date powermenu
+
+;tray-position = center
+;tray-padding = 2
+;tray-background = #0063ff
+
+;wm-restack = i3
+
+;override-redirect = true
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+
+mount-0 = /
+
+format-mounted-prefix = " "
+label-mounted = %used%/%total%
+label-mounted-underline= ${colors.primary}
+label-unmounted = %mountpoint% not mounted
+label-unmounted-foreground = ${colors.foreground-alt}
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+;pin-workspaces = true
+
+label-mode-padding = 2
+label-mode-foreground = #000
+label-mode-background = ${colors.primary}
+
+; focused = Active workspace on focused monitor
+label-focused = %index%
+label-focused-background = ${colors.background-alt}
+label-focused-underline= ${colors.primary}
+label-focused-padding = 2
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = %index%
+label-unfocused-padding = 2
+
+; visible = Active workspace on unfocused monitor
+label-visible = %index%
+label-visible-background = ${self.label-focused-background}
+label-visible-underline = ${self.label-focused-underline}
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = %index%
+label-urgent-background = ${colors.alert}
+label-urgent-padding = 2
+
+[module/memory]
+type = internal/memory
+interval = 2
+format-prefix = " "
+label = %gb_used%
+label-underline= ${colors.primary}
+
+[module/wlan]
+type = internal/network
+interface = wlp6s0
+interval = 3.0
+
+format-connected = <ramp-signal> <label-connected>
+label-connected = %downspeed%
+connected-exec = nm-connection-editor
+format-disconnected = <label-disconnected>
+label-disconnected = 
+label-connected-underline= ${colors.primary}
+label-disconnected-underline= ${colors.secondary}
+
+ramp-signal-0 = 
+ramp-signal-1 = 
+ramp-signal-2 = 
+
+[module/eth]
+type = internal/network
+interface = eno1
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+label-connected = %local_ip%
+label-connected-underline= ${colors.primary}
+
+format-disconnected =
+;format-disconnected = <label-disconnected>
+;format-disconnected-underline = ${self.format-connected-underline}
+;label-disconnected = %ifname% disconnected
+;label-disconnected-foreground = ${colors.foreground-alt}
+
+[module/date]
+type = internal/date
+interval = 5
+
+date =
+date-alt = " %d-%m-%Y"
+
+time = %H:%M
+time-alt = %H:%M:%S
+
+format-prefix = 
+
+label = %date% %time%
+label-underline= ${colors.primary}
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume = <ramp-volume> <label-volume>
+label-volume = %percentage:003%
+label-volume-underline= ${colors.primary}
+ramp-volume-0 = " "
+ramp-volume-1 = " "
+ramp-volume-2 = ""
+label-muted = 
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 98
+
+format-charging = <animation-charging> <label-charging>
+
+format-discharging = <ramp-capacity> <label-discharging>
+
+format-full-prefix = " "
+
+label-charging-underline= ${colors.primary}
+label-discharging-underline= ${colors.primary}
+label-full-underline= ${colors.green} 
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/cpu]
+type = internal/cpu
+interval = 2
+format-prefix = " " 
+format =  <label>
+label = %percentage:003%%
+label-underline= ${colors.primary}
+
+[module/temperature]
+type = internal/temperature
+thermal-zone = 0
+warn-temperature = 70
+
+format = <ramp> <label>
+format-warn = <ramp> <label-warn>
+format-warn-background = ${colors.secondary}
+
+label = %temperature-c%
+label-underline= ${colors.primary}
+label-warn = %temperature-c%
+
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+
+[module/powermenu]
+type = custom/menu
+
+expand-right = true
+format-spacing = 1
+
+label-open = 
+label-open-foreground = ${colors.secondary}
+label-close = 
+label-separator = |
+label-separator-foreground = ${colors.foreground-alt}
+
+menu-0-0 = 
+menu-0-0-foreground = ${colors.green}
+menu-0-0-exec = menu-open-1
+menu-0-1 = 
+menu-0-1-foreground = ${colors.secondary}
+menu-0-1-exec = menu-open-2
+
+menu-1-0 = 
+menu-1-0-foreground = ${colors.secondary}
+menu-1-0-exec = menu-open-0
+menu-1-1 = %{A1:reboot:}%{A}
+menu-1-1-foreground = ${colors.green}
+
+menu-2-0 = %{A1:poweroff:}%{A}
+menu-2-0-foreground = ${colors.green}
+menu-2-1 = 
+menu-2-1-foreground = ${colors.secondary}
+menu-2-1-exec = menu-open-0
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+pseudo-transparency = false
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+margin-left = 8
+margin-right = 8
